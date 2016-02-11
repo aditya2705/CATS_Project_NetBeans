@@ -5,6 +5,8 @@
  */
 package cats_project;
 
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -16,44 +18,62 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.binding.internal.libvlc_media_t;
 import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /**
  *
  * @author Aditya Rathi
  */
 
-public class MultiThreadedWindow extends JFrame{
+public class MultiThreadedWindow extends JFrame implements ActionListener{
 
     private JPanel topPanel = new JPanel();
-    private JPanel statusPanel = new JPanel();
-    private JButton playButton = new JButton("Play");private JButton btnStop = new JButton("Stop");
-    private JButton btnPause = new JButton("Pause");
+    private JButton playButton = new JButton("Stream All");
+    private JButton btnStop = new JButton("Stop All");
+    private JButton btnPause = new JButton("Pause All");
     private ArrayList<MediaPlayerFactory> factoryList = new ArrayList<>();
     private ArrayList<EmbeddedMediaPlayer> mediaPlayerList = new ArrayList<>();
     private ArrayList<String> urlList = new ArrayList<>();
-    int Video_Width = 230;
-    int Video_Height = 190;
-    int Num_Video;
-
-
-    public MultiThreadedWindow(ArrayList<String> urlList) {
+    int Video_Width = 470;
+    int Video_Height = 300;
+    int Num_Video = 6;
+    
+    public static void main(String[] args){
+    
+        NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
+        Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
         
-        this.urlList = urlList;
-        Num_Video = urlList.size();
+        SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new MultiThreadedWindow().start();
+                }
+        });
+    
+    }
+
+
+    public MultiThreadedWindow() {
+        
+        this.setTitle("CATS Admin Dashboard");
 
         playButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                play();
+                for(int i=0;i<Num_Video;i++)
+                    mediaPlayerList.get(i).playMedia("C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output"+i+".flv");
             }
         });
 
@@ -61,7 +81,8 @@ public class MultiThreadedWindow extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-               stop();
+               for(int i=0;i<Num_Video;i++)
+                    mediaPlayerList.get(i).stop();
             }
         });
 
@@ -69,7 +90,8 @@ public class MultiThreadedWindow extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-               pause();
+               for(int i=0;i<Num_Video;i++)
+                    mediaPlayerList.get(i).pause();
             }
         });
 
@@ -78,7 +100,7 @@ public class MultiThreadedWindow extends JFrame{
         topPanel.add(btnStop);
         topPanel.add(btnPause);
 
-        this.setSize(1000, 400);
+        this.setSize(1500, 800);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -90,25 +112,22 @@ public class MultiThreadedWindow extends JFrame{
         for (int i = 0; i < Num_Video; i++) {
             vidPanel[i] = new JPanel();
             videoCanvas[i] = new Canvas();
-
             vidPanel[i].setPreferredSize(new Dimension(Video_Width, Video_Height));
-            vidPanel[i].setBackground(Color.black);
             vidPanel[i].setLayout(new BorderLayout());
 
             videoCanvas[i].setBackground(Color.black);
+            
             vidPanel[i].add(videoCanvas[i], BorderLayout.CENTER);
-
+            
+            String s = "<html><font color='white'>Machine "+(i+1)+"</font></html>";
+            
+            JPanel belowPanel = new MachinePanel(s);
+            
+            vidPanel[i].add(belowPanel,BorderLayout.SOUTH);
             mainPanel.add(vidPanel[i]);
+            
 
         }
-        
-        new NativeDiscovery().discover();
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                
-            }
-        });
         
         for(int i=0;i<Num_Video;i++){
             MediaPlayerFactory factory = new MediaPlayerFactory();
@@ -129,7 +148,7 @@ public class MultiThreadedWindow extends JFrame{
 
         this.add(topPanel, BorderLayout.NORTH);
         this.add(mainPanel, BorderLayout.CENTER);
-        this.add(statusPanel, BorderLayout.SOUTH);
+        this.add(new LogPanel(), BorderLayout.SOUTH);
     }
 
     public void actionPerformed(ActionEvent e) throws IllegalStateException {
@@ -143,21 +162,6 @@ public class MultiThreadedWindow extends JFrame{
         this.setVisible(true);
     }
 
-    private void play() {
-        for(int i=0;i<Num_Video;i++)
-            mediaPlayerList.get(i).playMedia(urlList.get(i));
-       
-    }
-
-    private void stop() {
-        for(int i=0;i<Num_Video;i++)
-            mediaPlayerList.get(i).stop();
-    }
-
-    private void pause() {
-        for(int i=0;i<Num_Video;i++)
-            mediaPlayerList.get(i).pause();
-    }
 
     
 }
