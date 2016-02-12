@@ -56,7 +56,7 @@ public class ScreenRecorder extends VlcjTest {
 
     public static void main(String[] args) {
         
-        final String destination = "C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output5.flv";
+        final String destination = "C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output0.flv";
 
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
