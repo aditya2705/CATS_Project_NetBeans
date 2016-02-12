@@ -29,6 +29,7 @@ import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+import uk.co.caprica.vlcj.player.embedded.windows.Win32FullScreenStrategy;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 
 /**
@@ -109,7 +110,9 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
         Canvas[] videoCanvas = new Canvas[Num_Video];
         JPanel[] vidPanel = new JPanel[Num_Video];
 
+        
         for (int i = 0; i < Num_Video; i++) {
+            
             vidPanel[i] = new JPanel();
             videoCanvas[i] = new Canvas();
             vidPanel[i].setPreferredSize(new Dimension(Video_Width, Video_Height));
@@ -121,17 +124,16 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
             
             String s = "<html><font color='white'>Machine "+(i+1)+"</font></html>";
             
-            JPanel belowPanel = new MachinePanel(s);
+            JPanel belowPanel = new MachinePanel();
+            ((JLabel)belowPanel.getComponent(0)).setText(s);
             
             vidPanel[i].add(belowPanel,BorderLayout.SOUTH);
             mainPanel.add(vidPanel[i]);
             
-
-        }
-        
-        for(int i=0;i<Num_Video;i++){
             MediaPlayerFactory factory = new MediaPlayerFactory();
-            EmbeddedMediaPlayer mediaPlayer = factory.newEmbeddedMediaPlayer();
+            EmbeddedMediaPlayer mediaPlayer = factory.newEmbeddedMediaPlayer(new Win32FullScreenStrategy(this));
+            
+            
             mediaPlayer.setVideoSurface(factory.newVideoSurface(videoCanvas[i]));
             mediaPlayer.setPlaySubItems(true);
             mediaPlayer.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
@@ -144,6 +146,8 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
             
             factoryList.add(factory);
             mediaPlayerList.add(mediaPlayer);
+            
+
         }
 
         this.add(topPanel, BorderLayout.NORTH);

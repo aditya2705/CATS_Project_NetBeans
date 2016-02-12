@@ -28,14 +28,11 @@ public class LogPanel extends javax.swing.JPanel {
     private void initComponents() {
 
         jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jDownloadStreams = new javax.swing.JButton();
 
-        jButton1.setText("See Machine 1 Log");
+        jButton1.setText("Settings");
 
-        jButton2.setText("jButton2");
-
-        jButton3.setText("jButton3");
+        jDownloadStreams.setText("Download Streams");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -45,10 +42,8 @@ public class LogPanel extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addComponent(jButton1)
                 .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addContainerGap(1067, Short.MAX_VALUE))
+                .addComponent(jDownloadStreams)
+                .addContainerGap(1160, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -56,8 +51,7 @@ public class LogPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jDownloadStreams))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -65,7 +59,6 @@ public class LogPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jDownloadStreams;
     // End of variables declaration//GEN-END:variables
 }

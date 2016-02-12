@@ -11,14 +11,11 @@ package cats_project;
  */
 public class MachinePanel extends javax.swing.JPanel {
 
-    private String machineName;
     /**
      * Creates new form MachinePanel
      */
-    public MachinePanel(String machineName) {
-        this.machineName = machineName;
+    public MachinePanel() {
         initComponents();
-        jMachineName.setText(machineName);
     }
 
     /**
@@ -32,7 +29,6 @@ public class MachinePanel extends javax.swing.JPanel {
 
         jLogButton = new javax.swing.JButton();
         jMachineName = new javax.swing.JLabel();
-        jFullScreen = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
 
@@ -45,8 +41,6 @@ public class MachinePanel extends javax.swing.JPanel {
 
         jMachineName.setText("Machine");
 
-        jFullScreen.setText("See Full Screen");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -54,9 +48,7 @@ public class MachinePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jMachineName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
-                .addComponent(jFullScreen)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
                 .addComponent(jLogButton)
                 .addContainerGap())
         );
@@ -66,8 +58,7 @@ public class MachinePanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLogButton)
-                    .addComponent(jMachineName)
-                    .addComponent(jFullScreen))
+                    .addComponent(jMachineName))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -80,7 +71,6 @@ public class MachinePanel extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jFullScreen;
     private javax.swing.JButton jLogButton;
     private javax.swing.JLabel jMachineName;
     // End of variables declaration//GEN-END:variables

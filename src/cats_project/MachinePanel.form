@@ -24,9 +24,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jMachineName" min="-2" pref="160" max="-2" attributes="0"/>
-              <EmptySpace pref="104" max="32767" attributes="0"/>
-              <Component id="jFullScreen" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace pref="215" max="32767" attributes="0"/>
               <Component id="jLogButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -39,7 +37,6 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLogButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jMachineName" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jFullScreen" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
@@ -58,11 +55,6 @@
     <Component class="javax.swing.JLabel" name="jMachineName">
       <Properties>
         <Property name="text" type="java.lang.String" value="Machine"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JButton" name="jFullScreen">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="See Full Screen"/>
       </Properties>
     </Component>
   </SubComponents>
