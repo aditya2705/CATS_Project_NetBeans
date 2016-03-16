@@ -44,7 +44,7 @@ public class HttpDownloader {
         SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new MultiThreadedWindow();
+                    new ServerSidePanel();
                 }
         });
         

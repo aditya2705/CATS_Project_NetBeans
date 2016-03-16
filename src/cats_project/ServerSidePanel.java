@@ -12,7 +12,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -20,11 +19,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.binding.internal.libvlc_media_t;
-import uk.co.caprica.vlcj.discovery.NativeDiscovery;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
@@ -37,7 +34,7 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
  * @author Aditya Rathi
  */
 
-public class MultiThreadedWindow extends JFrame implements ActionListener{
+public class ServerSidePanel extends JFrame implements ActionListener{
 
     private JPanel topPanel = new JPanel();
     private JButton playButton = new JButton("Stream All");
@@ -58,14 +55,14 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
         SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new MultiThreadedWindow().start();
+                    new ServerSidePanel().start();
                 }
         });
     
     }
 
 
-    public MultiThreadedWindow() {
+    public ServerSidePanel() {
         
         this.setTitle("CATS Admin Dashboard");
 
@@ -73,8 +70,11 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                for(int i=0;i<Num_Video;i++)
+                int i;
+                for(i=0;i<Num_Video-1;i++)
                     mediaPlayerList.get(i).playMedia("C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output"+i+".flv");
+               
+                mediaPlayerList.get(i).playMedia("http://127.0.0.1:5555");
             }
         });
 
@@ -95,7 +95,6 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
                     mediaPlayerList.get(i).pause();
             }
         });
-
 
         topPanel.add(playButton);
         topPanel.add(btnStop);
@@ -165,7 +164,5 @@ public class MultiThreadedWindow extends JFrame implements ActionListener{
     private void start() {
         this.setVisible(true);
     }
-
-
     
 }
