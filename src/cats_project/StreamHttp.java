@@ -37,11 +37,10 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 public class StreamHttp extends VlcjTest {
    
    public static final String[] options = {
-      ":dshow-adev=none",
-      ":dshow-vdev=",
-      ":dshow-aspect-ratio=4\\:3",
-      ":live-caching=200",
-      ":sout-mp4-faststart"
+        "--quiet",
+        "--quiet-synchro",
+        "--intf",
+        "dummy"
     };
     
     public static void main(String[] args) throws Exception {
@@ -51,8 +50,8 @@ public class StreamHttp extends VlcjTest {
 
         MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(options);
         HeadlessMediaPlayer mediaPlayer = mediaPlayerFactory.newHeadlessMediaPlayer();
-        mediaPlayer.playMedia("C:\\Users\\Aditya Rathi\\Videos\\Modern Family\\Modern family Season 3 Complete HDTV Bzingaz\\MF1.mp4",
-                ":sout=#duplicate{dst=std{access=http,mux=ts,dst=127.0.0.1:5555}}");
+        mediaPlayer.playMedia("C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output0.mkv",
+                ":sout=#transcode{vcodec=h264,venc=x264{preset=ultrafast},vb=512,fps=15,width=640,height=480}:duplicate{dst=std{access=http,mux=ts,dst=127.0.0.1:5555}}");
 
         // Don't exit
         Thread.currentThread().join();

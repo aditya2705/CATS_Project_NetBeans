@@ -40,7 +40,7 @@ public class ScreenRecorder extends VlcjTest {
     };
 
     private static final String MRL     = "screen://";
-    private static final String SOUT    = ":sout=#transcode{vcodec=h264,vb=%d,scale=%f}:duplicate{dst=file{dst=%s}}";
+    private static final String SOUT    = ":sout=#transcode{vcodec=h264,venc=x264{cfr=16},scale=1,acodec=mpga,ab=160,channels=2,samplerate=44100,vb=%d,scale=%f}:duplicate{dst=file{dst=%s}}";
     private static final String FPS     = ":screen-fps=%d";
     private static final String CACHING = ":screen-caching=%d";
 
@@ -56,7 +56,7 @@ public class ScreenRecorder extends VlcjTest {
 
     public static void main(String[] args) {
         
-        final String destination = "C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output0.mp4";
+        final String destination = "C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output0.mkv";
 
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
