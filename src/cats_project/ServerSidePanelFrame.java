@@ -14,10 +14,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import uk.co.caprica.vlcj.binding.LibVlc;
@@ -34,18 +36,23 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
  * @author Aditya Rathi
  */
 
-public class ServerSidePanel extends JFrame implements ActionListener{
+public class ServerSidePanelFrame extends JFrame implements ActionListener{
 
     private JPanel topPanel = new JPanel();
     private JButton playButton = new JButton("Stream All");
     private JButton btnStop = new JButton("Stop All");
     private JButton btnPause = new JButton("Pause All");
+    private JButton btnAddMachine = new JButton("Add Machine");
     private ArrayList<MediaPlayerFactory> factoryList = new ArrayList<>();
     private ArrayList<EmbeddedMediaPlayer> mediaPlayerList = new ArrayList<>();
     private ArrayList<String> urlList = new ArrayList<>();
+    public ArrayList<MachineObject> machineObjectsList = new ArrayList<>();
+    private JPanel mainCenterPanel;
+    
+    
     int Video_Width = 470;
     int Video_Height = 300;
-    int Num_Video = 6;
+    
     
     public static void main(String[] args){
     
@@ -55,26 +62,32 @@ public class ServerSidePanel extends JFrame implements ActionListener{
         SwingUtilities.invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new ServerSidePanel().start();
+                    new ServerSidePanelFrame().start();
                 }
         });
+       
     
     }
 
 
-    public ServerSidePanel() {
+    public ServerSidePanelFrame() {
         
         this.setTitle("CATS Admin Dashboard");
+        
+        
+        
+        machineObjectsList.add(new MachineObject("Machine A", "http://127.0.0.1:5555"));
+        machineObjectsList.add(new MachineObject("Machine B", "http://127.0.0.1:5555"));
+        machineObjectsList.add(new MachineObject("Machine C", "http://127.0.0.1:5555"));
+        
 
         playButton.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                int i;
-                for(i=0;i<Num_Video-1;i++)
-                    mediaPlayerList.get(i).playMedia("C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output"+i+".flv");
+                for(int i=0;i<machineObjectsList.size();i++)
+                    mediaPlayerList.get(i).playMedia(machineObjectsList.get(i).getMachineAddress());
                
-                mediaPlayerList.get(i).playMedia("http://127.0.0.1:5555");
             }
         });
 
@@ -82,7 +95,7 @@ public class ServerSidePanel extends JFrame implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-               for(int i=0;i<Num_Video;i++)
+               for(int i=0;i<machineObjectsList.size();i++)
                     mediaPlayerList.get(i).stop();
             }
         });
@@ -91,49 +104,97 @@ public class ServerSidePanel extends JFrame implements ActionListener{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-               for(int i=0;i<Num_Video;i++)
+               for(int i=0;i<machineObjectsList.size();i++)
                     mediaPlayerList.get(i).pause();
+            }
+        });
+        
+        btnAddMachine.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                String machineName = JOptionPane.showInputDialog("Enter Machine Name: ");
+                
+                String machineAddress = JOptionPane.showInputDialog("Enter Address for "+machineName+" : ","http://");
+                
+                machineObjectsList.add(new MachineObject(machineName, machineAddress));
+                
+                refreshMachineView();
             }
         });
 
         topPanel.add(playButton);
         topPanel.add(btnStop);
         topPanel.add(btnPause);
+        topPanel.add(btnAddMachine);
 
         this.setSize(1500, 800);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel mainPanel = new JPanel(new FlowLayout());
-        Canvas[] videoCanvas = new Canvas[Num_Video];
-        JPanel[] vidPanel = new JPanel[Num_Video];
+        mainCenterPanel = new JPanel(new FlowLayout());
 
+        this.add(topPanel, BorderLayout.NORTH);
+        this.add(mainCenterPanel, BorderLayout.CENTER);
+        this.add(new SettingsPanel(this),BorderLayout.SOUTH);
+        refreshMachineView();
         
-        for (int i = 0; i < Num_Video; i++) {
-            
-            vidPanel[i] = new JPanel();
-            videoCanvas[i] = new Canvas();
-            vidPanel[i].setPreferredSize(new Dimension(Video_Width, Video_Height));
-            vidPanel[i].setLayout(new BorderLayout());
+        File file = new File("C:\\Users\\Aditya Rathi\\Desktop\\");
+        long memory = (file.getUsableSpace())/(1024*1024);
+        
+        JOptionPane.showMessageDialog(
+            this, "Memory available: "+memory+" MB");
+        
+    }
 
-            videoCanvas[i].setBackground(Color.black);
+    public void actionPerformed(ActionEvent e) throws IllegalStateException {
+
+        if (e.getActionCommand().equals("OK")) {
+            this.dispose();
+        }
+    }
+
+    private void start() {
+        this.setVisible(true);
+    }
+
+    public void refreshMachineView(){
+        
+        mainCenterPanel.removeAll();
+        mainCenterPanel.revalidate();
+        mainCenterPanel.repaint();
+        
+        mediaPlayerList = new ArrayList<>();
+        factoryList = new ArrayList<>();
+        
+        for(int i = 0; i < machineObjectsList.size(); i++) {
             
-            vidPanel[i].add(videoCanvas[i], BorderLayout.CENTER);
+            JPanel vidPanel = machineObjectsList.get(i).getVideoPanel();
+            Canvas vidCanvas = machineObjectsList.get(i).getVideoCanvas();
             
-            String s = "<html><font color='white'>Machine "+(i+1)+"</font></html>";
+            vidPanel.setPreferredSize(new Dimension(Video_Width, Video_Height));
+            vidPanel.setLayout(new BorderLayout());
+
+            vidCanvas.setBackground(Color.black);
             
-            JPanel belowPanel = new MachinePanel();
+            vidPanel.add(vidCanvas, BorderLayout.CENTER);
+            
+            String s = "<html><font color='white'>"+machineObjectsList.get(i).getMachineName()+"</font></html>";
+            
+            JPanel belowPanel = new MachinePanel(this,i);
             ((JLabel)belowPanel.getComponent(0)).setText(s);
             
-            vidPanel[i].add(belowPanel,BorderLayout.SOUTH);
-            mainPanel.add(vidPanel[i]);
+            vidPanel.add(belowPanel,BorderLayout.SOUTH);
+            mainCenterPanel.add(vidPanel);
             
             MediaPlayerFactory factory = new MediaPlayerFactory();
+            
             EmbeddedMediaPlayer mediaPlayer = factory.newEmbeddedMediaPlayer(new Win32FullScreenStrategy(this));
             
             
-            mediaPlayer.setVideoSurface(factory.newVideoSurface(videoCanvas[i]));
+            mediaPlayer.setVideoSurface(factory.newVideoSurface(vidCanvas));
             mediaPlayer.setPlaySubItems(true);
             mediaPlayer.addMediaPlayerEventListener(new MediaPlayerEventAdapter() {
 
@@ -148,21 +209,9 @@ public class ServerSidePanel extends JFrame implements ActionListener{
             
 
         }
-
-        this.add(topPanel, BorderLayout.NORTH);
-        this.add(mainPanel, BorderLayout.CENTER);
-        this.add(new LogPanel(), BorderLayout.SOUTH);
-    }
-
-    public void actionPerformed(ActionEvent e) throws IllegalStateException {
-
-        if (e.getActionCommand().equals("OK")) {
-            this.dispose();
-        }
-    }
-
-    private void start() {
-        this.setVisible(true);
+        
+        
+    
     }
     
 }

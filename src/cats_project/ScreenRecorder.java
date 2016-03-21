@@ -5,11 +5,6 @@
  */
 package cats_project;
 
-/**
- *
- * @author Aditya Rathi
- */
-
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 import java.awt.event.ActionEvent;
@@ -40,13 +35,13 @@ public class ScreenRecorder extends VlcjTest {
     };
 
     private static final String MRL     = "screen://";
-    private static final String SOUT    = ":sout=#transcode{vcodec=h264,venc=x264{cfr=16},scale=1,acodec=mpga,ab=160,channels=2,samplerate=44100,vb=%d,scale=%f}:duplicate{dst=file{dst=%s}}";
+    private static final String SOUT    = ":sout=#transcode{vcodec=FLV1,vb=%d,scale=%f}:duplicate{dst=file{dst=%s}}";
     private static final String FPS     = ":screen-fps=%d";
     private static final String CACHING = ":screen-caching=%d";
 
     private static final int    fps     = 20;
     private static final int    caching = 500;
-    private static final int    bits    = 16384;
+    private static final int    bits    = 4096;
     private static final float  scale   = 2f;
 
     private final MediaPlayerFactory mediaPlayerFactory;
@@ -55,11 +50,13 @@ public class ScreenRecorder extends VlcjTest {
     private final JFrame frame;
 
     public static void main(String[] args) {
-        
-        final String destination = "C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output0.mkv";
+       
+
+        final String destination = "C:\\Users\\Aditya Rathi\\Desktop\\tt.flv";
 
         NativeLibrary.addSearchPath(RuntimeUtil.getLibVlcLibraryName(), "C:\\Program Files\\VideoLAN\\VLC");
         Native.loadLibrary(RuntimeUtil.getLibVlcLibraryName(), LibVlc.class);
+        
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {

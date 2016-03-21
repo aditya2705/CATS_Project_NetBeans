@@ -5,16 +5,22 @@
  */
 package cats_project;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Aditya Rathi
  */
 public class MachinePanel extends javax.swing.JPanel {
 
+    private ServerSidePanelFrame mainFrame;
+    private int index = -1;
     /**
      * Creates new form MachinePanel
      */
-    public MachinePanel() {
+    public MachinePanel(ServerSidePanelFrame mainFrame, int index) {
+        this.mainFrame = mainFrame;
+        this.index = index;
         initComponents();
     }
 
@@ -27,19 +33,27 @@ public class MachinePanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLogButton = new javax.swing.JButton();
+        configureButton = new javax.swing.JButton();
         jMachineName = new javax.swing.JLabel();
+        removeButton = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(0, 0, 0));
 
-        jLogButton.setText("See Logs");
-        jLogButton.addActionListener(new java.awt.event.ActionListener() {
+        configureButton.setText("Configure");
+        configureButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jLogButtonActionPerformed(evt);
+                configureButtonActionPerformed(evt);
             }
         });
 
         jMachineName.setText("Machine");
+
+        removeButton.setText("Remove");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -48,8 +62,10 @@ public class MachinePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jMachineName, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 215, Short.MAX_VALUE)
-                .addComponent(jLogButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
+                .addComponent(removeButton)
+                .addGap(18, 18, 18)
+                .addComponent(configureButton)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -57,21 +73,33 @@ public class MachinePanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLogButton)
-                    .addComponent(jMachineName))
+                    .addComponent(configureButton)
+                    .addComponent(jMachineName)
+                    .addComponent(removeButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jLogButtonActionPerformed
+    private void configureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configureButtonActionPerformed
         // TODO add your handling code here:
+        String machineName = JOptionPane.showInputDialog("Enter Machine Name: ",mainFrame.machineObjectsList.get(index).getMachineName());
+        String machineAddress = JOptionPane.showInputDialog("Enter Address for "+machineName+" : ",mainFrame.machineObjectsList.get(index).getMachineAddress());
+        mainFrame.machineObjectsList.get(index).setMachineName(machineName);
+        mainFrame.machineObjectsList.get(index).setMachineAddress(machineAddress);
         
+    }//GEN-LAST:event_configureButtonActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        // TODO add your handling code here:
+        mainFrame.machineObjectsList.remove(index);
+        mainFrame.refreshMachineView();
         
-    }//GEN-LAST:event_jLogButtonActionPerformed
+    }//GEN-LAST:event_removeButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jLogButton;
+    private javax.swing.JButton configureButton;
     private javax.swing.JLabel jMachineName;
+    private javax.swing.JButton removeButton;
     // End of variables declaration//GEN-END:variables
 }

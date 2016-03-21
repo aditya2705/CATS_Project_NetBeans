@@ -21,9 +21,7 @@ package cats_project;
 
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
-import javax.swing.SwingUtilities;
 import uk.co.caprica.vlcj.binding.LibVlc;
-import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerFactory;
 import uk.co.caprica.vlcj.player.headless.HeadlessMediaPlayer;
 import uk.co.caprica.vlcj.runtime.RuntimeUtil;
@@ -50,11 +48,12 @@ public class StreamHttp extends VlcjTest {
 
         MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(options);
         HeadlessMediaPlayer mediaPlayer = mediaPlayerFactory.newHeadlessMediaPlayer();
-        mediaPlayer.playMedia("C:\\Users\\Aditya Rathi\\Desktop\\CATS Test Folder\\output0.mkv",
-                ":sout=#transcode{vcodec=h264,venc=x264{preset=ultrafast},vb=512,fps=15,width=640,height=480}:duplicate{dst=std{access=http,mux=ts,dst=127.0.0.1:5555}}");
-
+        mediaPlayer.playMedia("C:\\Users\\Aditya Rathi\\Desktop\\oi.mp4",
+                ":sout=#std{access=http,mux=ts,dst=127.0.0.1:5555}");
+        
         // Don't exit
         Thread.currentThread().join();
+
     }
     
 }
