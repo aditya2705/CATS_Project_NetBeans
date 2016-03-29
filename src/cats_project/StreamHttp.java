@@ -48,7 +48,7 @@ public class StreamHttp extends VlcjTest {
 
         MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(options);
         HeadlessMediaPlayer mediaPlayer = mediaPlayerFactory.newHeadlessMediaPlayer();
-        mediaPlayer.playMedia("C:\\Users\\Aditya Rathi\\Desktop\\oi.mp4",
+        mediaPlayer.playMedia("C:\\Users\\Aditya Rathi\\Videos\\Modern Family\\Modern family Season 3 Complete HDTV Bzingaz\\MF1.mp4",
                 ":sout=#std{access=http,mux=ts,dst=127.0.0.1:5555}");
         
         // Don't exit

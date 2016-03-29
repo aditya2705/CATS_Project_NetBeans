@@ -48,6 +48,7 @@ public class ServerSidePanelFrame extends JFrame implements ActionListener{
     private ArrayList<String> urlList = new ArrayList<>();
     public ArrayList<MachineObject> machineObjectsList = new ArrayList<>();
     private JPanel mainCenterPanel;
+    private String downloadPath = "";
     
     
     int Video_Width = 470;
@@ -210,8 +211,26 @@ public class ServerSidePanelFrame extends JFrame implements ActionListener{
 
         }
         
-        
+    }
     
+    public void setDownloadPath(String path){
+        
+        downloadPath = path;
+        
+    }
+    
+    public void downloadStreams(){
+    
+        for(int i=0;i<machineObjectsList.size();i++)
+              mediaPlayerList.get(i).stop();
+        
+        for(int i=0;i<machineObjectsList.size();i++)
+              mediaPlayerList.get(i).playMedia(machineObjectsList.get(i).getMachineAddress(),
+                      ":sout=#transcode{vcodec=FLV1,vb=4096,scale=2}:duplicate{dst=file{dst='C:\\Users\\Aditya Rathi\\Desktop\\o"+i+".flv'}}");
+        
+        
+        
+        
     }
     
 }
